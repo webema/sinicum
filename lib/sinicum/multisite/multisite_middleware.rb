@@ -7,6 +7,7 @@ module Sinicum
 
       def call(env)
         request = ActionDispatch::Request.new(env)
+        request.session.delete 'sinicum-init'
         path = request.path.gsub(".html", "")
         unless multisite_ignored_path?(env)
           if Rails.configuration.x.multisite_production == true
@@ -41,7 +42,6 @@ module Sinicum
       private
       def log(msg, request)
         Rails.logger.info("  Sinicum Multisite:" + msg) if Rails.configuration.x.multisite_logging
-        Rails.logger.info("  Sinicum Multisite Session:" + request.session.inspect) if Rails.configuration.x.multisite_logging
       end
 
       def node_from_domain(domain, type)

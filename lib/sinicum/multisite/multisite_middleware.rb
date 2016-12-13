@@ -9,6 +9,7 @@ module Sinicum
         request = ActionDispatch::Request.new(env)
         session = ActionDispatch::Request::Session.find(env)
         log("Sinicum-Multisite Header => #{request.headers['Sinicum-Multisite']}")
+        log("Sinicum-Multisite env => #{env['sinicum.multisite']}")
         log("Session id => #{session.id}")
         log("Session loaded? => #{session.loaded?}")
         session.delete 'sinicum-init'
@@ -31,6 +32,7 @@ module Sinicum
               # Node has been found, so the session is set
               log("Node has been found - Session => #{node[:root_node].inspect}")
               session[:multisite_root] = node[:root_node]
+              env['sinicum.multisite'] = node[:root_node]
             end
             if on_root_path?(session[:multisite_root], request.fullpath)
               # Redirect to the fullpath without the root_path for consistency

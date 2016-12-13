@@ -7,7 +7,7 @@ module Sinicum
 
       def call(env)
         request = ActionDispatch::Request.new(env)
-        puts "HEADERS => #{request.headers.inspect}"
+        log("HEADERS => #{request.headers.inspect}")
         session = ActionDispatch::Request::Session.find(env)
         #session.delete 'sinicum-init'
         path = request.path.gsub(".html", "")
@@ -22,11 +22,11 @@ module Sinicum
               session[:multisite_root] = node[:root_node]
             end
           else # author/dev
-            log("Session => #{session[:multisite_root].inspect}", request)
+            log("Session => #{session[:multisite_root].inspect}")
             query = "select * from mgnl:multisite where root_node LIKE '#{root_from_path(path)}'"
             if node = Sinicum::Jcr::Node.query(:multisite, :sql, query).first
               # Node has been found, so the session is set
-              log("Node has been found - Session => #{node[:root_node].inspect}", request)
+              log("Node has been found - Session => #{node[:root_node].inspect}")
               session[:multisite_root] = node[:root_node]
             end
             if on_root_path?(session[:multisite_root], request.fullpath)
@@ -42,7 +42,7 @@ module Sinicum
       end
 
       private
-      def log(msg, request)
+      def log(msg)
         Rails.logger.info("  Sinicum Multisite:" + msg) if Rails.configuration.x.multisite_logging
       end
 

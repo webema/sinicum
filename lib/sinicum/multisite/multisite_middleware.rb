@@ -89,7 +89,7 @@ module Sinicum
 
       def redirect(location, root_path)
         log("REDIRECT INITIALIZED")
-        [301, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
+        [308, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
       end
     end
   end

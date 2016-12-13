@@ -8,6 +8,7 @@ module Sinicum
       def call(env)
         request = ActionDispatch::Request.new(env)
         session = ActionDispatch::Request::Session.find(env)
+        log("Sinicum-Multisite Header => #{request.headers['Sinicum-Multisite']}")
         log("Session id => #{session.id}")
         log("Session loaded? => #{session.loaded?}")
         session.delete 'sinicum-init'
@@ -34,7 +35,7 @@ module Sinicum
             if on_root_path?(session[:multisite_root], request.fullpath)
               # Redirect to the fullpath without the root_path for consistency
               return redirect(gsub_root_path(
-                session[:multisite_root], request.fullpath))
+                session[:multisite_root], request.fullpath), session[:multisite_root])
             end
           end
         end
@@ -84,8 +85,8 @@ module Sinicum
           .include?(true)
       end
 
-      def redirect(location)
-        [301, { 'Location' => location, 'Content-Type' => 'text/html' }, ['Moved Permanently']]
+      def redirect(location, root_path)
+        [301, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
       end
     end
   end

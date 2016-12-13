@@ -61,7 +61,7 @@ module Sinicum
       end
 
       def gsub_root_path(root_path, path)
-        clean_path = path.gsub(root_path, '')
+        clean_path = path.gsub(root_path, '').gsub(".html", '')
         clean_path.empty? ? '/' : clean_path
       end
 

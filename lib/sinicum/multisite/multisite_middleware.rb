@@ -7,9 +7,10 @@ module Sinicum
 
       def call(env)
         request = ActionDispatch::Request.new(env)
-        log("HEADERS => #{request.headers.inspect}")
         session = ActionDispatch::Request::Session.find(env)
-        #session.delete 'sinicum-init'
+        log("Session loaded? => #{session.loaded?}")
+        session.delete 'sinicum-init'
+        log("Session loaded? => #{session.loaded?}")
         path = request.path.gsub(".html", "")
         unless multisite_ignored_path?(env)
           if Rails.configuration.x.multisite_production == true

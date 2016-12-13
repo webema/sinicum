@@ -7,6 +7,7 @@ module Sinicum
 
       def call(env)
         request = ActionDispatch::Request.new(env)
+        puts "HEADERS => #{request.headers.inspect}"
         session = ActionDispatch::Request::Session.find(env)
         #session.delete 'sinicum-init'
         path = request.path.gsub(".html", "")

@@ -9,7 +9,7 @@ module Sinicum
         request = ActionDispatch::Request.new(env)
         session = ActionDispatch::Request::Session.find(env)
         log("Sinicum-Multisite Header => #{request.headers['Sinicum-Multisite']}")
-        log("Sinicum-Multisite env => #{env['sinicum.multisite']}")
+        log("Sinicum-Multisite env => #{env['sinicum.multisite']} | #{env['Sinicum-Multisite']}")
         log("Session id => #{session.id}")
         log("Session loaded? => #{session.loaded?}")
         session.delete 'sinicum-init'
@@ -89,7 +89,7 @@ module Sinicum
 
       def redirect(location, root_path)
         log("REDIRECT INITIALIZED")
-        [307, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
+        [301, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
       end
     end
   end

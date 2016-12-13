@@ -8,6 +8,7 @@ module Sinicum
       def call(env)
         request = ActionDispatch::Request.new(env)
         session = ActionDispatch::Request::Session.find(env)
+        log("Session id => #{session.id}")
         log("Session loaded? => #{session.loaded?}")
         session.delete 'sinicum-init'
         log("Session loaded? => #{session.loaded?}")

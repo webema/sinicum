@@ -7,7 +7,8 @@ module Sinicum
 
       def call(env)
         request = ActionDispatch::Request.new(env)
-        request.session.delete 'sinicum-init'
+        session = ActionDispatch::Request::Session.find(env)
+        #session.delete 'sinicum-init'
         path = request.path.gsub(".html", "")
         unless multisite_ignored_path?(env)
           if Rails.configuration.x.multisite_production == true
@@ -17,25 +18,25 @@ module Sinicum
               node = node_from_domain(request.host, :alias_domains)
               return redirect("#{node[:primary_domain]}#{request.fullpath}") if node
             else
-              request.session[:multisite_root] = node[:root_node]
+              session[:multisite_root] = node[:root_node]
             end
           else # author/dev
-            log("Session => #{request.session[:multisite_root].inspect}", request)
+            log("Session => #{session[:multisite_root].inspect}", request)
             query = "select * from mgnl:multisite where root_node LIKE '#{root_from_path(path)}'"
             if node = Sinicum::Jcr::Node.query(:multisite, :sql, query).first
               # Node has been found, so the session is set
               log("Node has been found - Session => #{node[:root_node].inspect}", request)
-              request.session[:multisite_root] = node[:root_node]
+              session[:multisite_root] = node[:root_node]
             end
-            if on_root_path?(request.session[:multisite_root], request.fullpath)
+            if on_root_path?(session[:multisite_root], request.fullpath)
               # Redirect to the fullpath without the root_path for consistency
               return redirect(gsub_root_path(
-                request.session[:multisite_root], request.fullpath))
+                session[:multisite_root], request.fullpath))
             end
           end
         end
         status, headers, response =
-          @app.call(adjust_paths(env, request.session[:multisite_root]))
+          @app.call(adjust_paths(env, session[:multisite_root]))
         [status, headers, response]
       end
 

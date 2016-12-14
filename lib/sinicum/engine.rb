@@ -23,6 +23,7 @@ module Sinicum
         Sinicum::Imaging::ImagingMiddleware
       unless app.config.x.multisite_disabled == true
         app.middleware.use Sinicum::Multisite::MultisiteMiddleware
+        app.middleware.use Sinicum::Multisite::RedirectMiddleware
         if app.config.x.multisite_ignored_paths.is_a?(Array)
           app.config.x.multisite_ignored_paths <<
             /#{Regexp.quote(Rails.configuration.assets.prefix)}/

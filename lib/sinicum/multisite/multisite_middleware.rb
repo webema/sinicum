@@ -32,12 +32,10 @@ module Sinicum
               # Node has been found, so the session is set
               log("Node has been found - Session => #{node[:root_node].inspect}")
               session[:multisite_root] = node[:root_node]
-              env['sinicum.multisite'] = node[:root_node]
             end
             if on_root_path?(session[:multisite_root], request.fullpath)
               # Redirect to the fullpath without the root_path for consistency
-              return redirect(gsub_root_path(
-                session[:multisite_root], request.fullpath), session[:multisite_root])
+              env['multisite.redirect'] = gsub_root_path(session[:multisite_root], request.fullpath)
             end
           end
         end
@@ -89,7 +87,7 @@ module Sinicum
 
       def redirect(location, root_path)
         log("REDIRECT INITIALIZED")
-        [308, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
+        [302, { 'Location' => location, 'Content-Type' => 'text/html', 'Sinicum-Multisite' => root_path }, ['Moved Permanently']]
       end
     end
   end

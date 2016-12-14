@@ -11,7 +11,7 @@ module Sinicum
 
       private
       def redirect(location)
-        [308, { 'Location' => location, 'Content-Type' => 'text/html' }, ['Moved Permanently']]
+        [307, { 'Location' => location, 'Content-Type' => 'text/html' }, ['Moved Permanently']]
       end
     end
   end

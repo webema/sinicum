@@ -10,6 +10,7 @@ module Sinicum
       allow(node).to receive(:mgnl_template).and_return("something")
       allow(Sinicum::Multisite::Utils).to receive(:all_root_paths).
           and_return(%w[/dievision /test /labs])
+      allow(Sinicum::Multisite::Utils).to receive(:root_node_for_host).and_return("/labs")
     end
 
     it "should remove the html_ending" do
@@ -18,7 +19,7 @@ module Sinicum
     end
 
     it "should ignore and conserve query strings" do
-      get :index, format: "html", key: "value"
+      get :index, format: "html", params: { key: "value" }
       expect(response).to redirect_to("/home?key=value")
     end
 

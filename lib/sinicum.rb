@@ -1,4 +1,5 @@
 require 'active_support/core_ext'
+require 'sprockets/railtie'
 require 'sinicum/engine'
 
 module Sinicum
@@ -21,8 +22,10 @@ module Sinicum
   require 'sinicum/imaging/imaging_file'
 
   require 'sinicum/multisite/multisite_middleware'
+  require 'sinicum/multisite/utils'
 
   require 'sinicum/jcr/jcr_configuration'
+  require 'sinicum/jcr/configuration_reader'
   require 'sinicum/jcr/api_queries'
   require 'sinicum/jcr/api_client'
   require 'sinicum/jcr/query_sanitizer'

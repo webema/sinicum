@@ -63,9 +63,9 @@ module Sinicum
       content_tag(:title) do
         cms_title = nil
         if defined?(@meta_title) && @meta_title
-          cms_title = @meta_title
+          cms_title = sanitize(@meta_title)
         elsif defined?(@page_title) && @page_title
-          cms_title = @page_title
+          cms_title = sanitize(@page_title)
         else
           cms_title = mgnl_out(:meta_title, format: :strip_tags).presence ||
             mgnl_out(:title, format: :strip_tags)
@@ -166,7 +166,7 @@ module Sinicum
     def calculate_resulting_width(srcset_option, original_picture_width)
       srcset_option = srcset_option[0...-1]
       result = original_picture_width*srcset_option.to_f
-      result.to_i
+      result >= 1 ? result.to_i : 1
     end
 
   end

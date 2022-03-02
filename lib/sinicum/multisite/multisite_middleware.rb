@@ -44,7 +44,7 @@ module Sinicum
       end
 
       def node_from_domain(domain, type)
-        Rails.cache.fetch("sinicum-multisite-node-#{type}-#{domain}", expires: 1.hour) do
+        Rails.cache.fetch("sinicum-multisite-node-#{type}-#{domain}", expires_in: 1.hour) do
           query = "select * from mgnl:multisite where #{type} LIKE '%//#{domain}%'"
           Sinicum::Jcr::Node.query(:multisite, :sql, query).first
         end

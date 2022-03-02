@@ -125,7 +125,7 @@ module Sinicum
         uri = object
       end
       uri = options[:prefix] + uri if options[:prefix]
-      tag_params = { href: uri }
+      tag_params = { href: url_for(uri) }
       tag_params[:class] = options[:class] if options[:class]
       tag_params[:style] = options[:style] if options[:style]
       tag_params[:target] = options[:target] if options[:target]

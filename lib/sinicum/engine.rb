@@ -19,11 +19,11 @@ module Sinicum
       unless app.config.x.multisite_disabled == true
         app.middleware.use Sinicum::Multisite::MultisiteMiddleware
         if app.config.x.multisite_ignored_paths.is_a?(Array)
-          app.config.x.multisite_ignored_paths <<
-            /#{Regexp.quote(Rails.configuration.assets.prefix)}/
+         app.config.x.multisite_ignored_paths <<
+            /assets/
         else
           app.config.x.multisite_ignored_paths =
-            [/#{Regexp.quote(Rails.configuration.assets.prefix)}/]
+            [/assets/]
         end
       end
     end

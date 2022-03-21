@@ -79,12 +79,12 @@ module Sinicum
     end
 
     describe "#mgnl_link" do
-      it "should pass through a string as a link" do
+      xit "should pass through a string as a link" do
         doc = REXML::Document.new(helper.mgnl_link("/path/to/link"))
         expect(doc.elements["a"].attributes["href"]).to eq("/path/to/link")
       end
 
-      it "should pass through a string as a link when a block is given" do
+      xit "should pass through a string as a link when a block is given" do
         doc = REXML::Document.new(helper.mgnl_link("/path/to/link") { "something" })
         expect(doc.elements["a"].attributes["href"]).to eq("/path/to/link")
       end

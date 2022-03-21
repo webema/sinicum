@@ -45,7 +45,7 @@ module Sinicum
 
           expect(ApiQueries).to receive(:http_client).and_return(http_client)
           expect(http_client).to receive(:get).with(
-            client_base_url + URI.escape(path), nil, {}).and_return(response)
+            client_base_url + path, nil, {}).and_return(response)
 
           subject.api_get(path)
         end

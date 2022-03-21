@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.add_dependency('rails', '> 4.1')
   s.add_dependency('httpclient', '~> 2.8')
   s.add_dependency('multi_json', '~> 1.13')
-  s.add_development_dependency('rspec-rails', '~> 3.7')
+  s.add_development_dependency('rspec-rails')
   s.add_development_dependency('test-unit')
   s.add_development_dependency('yard')
   s.add_development_dependency('webmock')

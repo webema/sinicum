@@ -3,7 +3,7 @@ module Sinicum
   module MgnlHelper
     include HelperUtils
 
-    # Public: Returns the path for an object:
+    # Public: Returns the full path for an object and ignores multisite:
     #
     # - If the object is a Node, it returns the path of the node
     # - If the object is a UUID-String, it is resolved to the Node and the node's path
@@ -21,9 +21,10 @@ module Sinicum
       elsif key_or_object.is_a?(String)
         path = key_or_object.dup
       end
-      url_for(path)
+      path
     end
 
+    # Returns a link to the node. Uses multisite if enabled.
     def mgnl_link(key_or_object, options = {}, &block)
       options = options.dup
       object = object_from_key_or_object(key_or_object, options[:workspace] || "website")

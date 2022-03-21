@@ -39,7 +39,7 @@ module Sinicum
         x = @x.to_f
         y = @y.to_f
         if @y != '' && ((x / original_ratio > y) || @x == '')
-          x = (y * original_ratio).round 
+          x = (y * original_ratio).round
         else
           y = (x / original_ratio).round
         end

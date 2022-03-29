@@ -78,9 +78,9 @@ module Sinicum
           path = @path_info.dup
         end
         @normalized_request_path, @extension, @srcset_option, @fingerprint = extract_fingerprint(path)
-        renderer_image = normalized_request_path[
-          @app['imaging_prefix'].size + 1, normalized_request_path.size]
-        if renderer_image.present?
+        if @normalized_request_path.present?
+          renderer_image = normalized_request_path[
+            @app['imaging_prefix'].size + 1, normalized_request_path.size]
           @renderer = renderer_image[0, renderer_image.index("/")]
           @workspace = @app['workspace']
           @file_asset_path = renderer_image[@renderer.size, renderer_image.size]
@@ -97,12 +97,14 @@ module Sinicum
           extension = match[3][1..match[3].length] if match[3]
           [match[1], extension, nil, match[2]]
         else
-          extension = nil
           if match = path.match(/(.+)\.(\w+)$/)
             extension = match[2]
             path = match[1]
+            [path, extension, nil, nil]
+          else
+            [nil, nil, nil, nil]
           end
-          [path, extension, nil, nil]
+          
         end
       end
 

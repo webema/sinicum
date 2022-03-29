@@ -80,10 +80,11 @@ module Sinicum
         @normalized_request_path, @extension, @srcset_option, @fingerprint = extract_fingerprint(path)
         renderer_image = normalized_request_path[
           @app['imaging_prefix'].size + 1, normalized_request_path.size]
-        @renderer = renderer_image[0, renderer_image.index("/")]
-        @workspace = @app['workspace']
-        @file_asset_path = renderer_image[@renderer.size, renderer_image.size]
-        nil
+        if renderer_image.present?
+          @renderer = renderer_image[0, renderer_image.index("/")]
+          @workspace = @app['workspace']
+          @file_asset_path = renderer_image[@renderer.size, renderer_image.size]
+        end
       end
 
       def extract_fingerprint(path)

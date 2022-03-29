@@ -11,6 +11,13 @@ module Sinicum
           expect(file.fingerprint).to be nil
         end
 
+        it "should handle bad paths" do
+          file = ImagingFile.new("/damfiles")
+          expect(file.normalized_request_path).to eq("/damfiles")
+          expect(file.extension).to be nil
+          expect(file.fingerprint).to be nil
+        end
+
         it "should normalize not touch a regular imaging path" do
           file = ImagingFile.new("/damfiles/default/path/to")
           expect(file.normalized_request_path).to eq("/damfiles/default/path/to")

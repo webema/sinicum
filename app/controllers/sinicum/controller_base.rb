@@ -29,9 +29,6 @@ module Sinicum
         if block_given?
           original_rails_render(options, locals, block)
         else
-          puts "DEBUG::: options =>"
-          puts options.inspect
-          puts locals.inspect
           original_rails_render(options, locals)
         end
       end

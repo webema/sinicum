@@ -75,6 +75,7 @@ module Sinicum
       value = mgnl_value(key)
       value = "" if value.nil?
       value = value.to_s
+      value = value.gsub("/#{params[:site_prefix]}", "") if params[:site_prefix]
       if options[:format] == :sanitize
         value = sanitize(value)
       elsif options[:format] == :strip_tags

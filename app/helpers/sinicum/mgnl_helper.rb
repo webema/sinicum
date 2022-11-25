@@ -74,8 +74,11 @@ module Sinicum
     def mgnl_out(key, options = {})
       value = mgnl_value(key)
       value = "" if value.nil?
-      value = value.to_s
-      value = value.gsub("/#{params[:site_prefix]}", "") if params[:site_prefix]
+      if Rails.application.config.x.multisite_production
+        value = value.to_s.gsub("/#{params[:site_prefix]}", "") if params[:site_prefix].present?
+      else
+        value = value.to_s
+      end      
       if options[:format] == :sanitize
         value = sanitize(value)
       elsif options[:format] == :strip_tags

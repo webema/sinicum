@@ -75,7 +75,7 @@ module Sinicum
       value = mgnl_value(key)
       value = "" if value.nil?
       if Rails.application.config.x.multisite_production
-        value = value.to_s.gsub("/#{params[:site_prefix]}", "") if params[:site_prefix].present?
+        value = value.to_s.gsub("\"/#{params[:site_prefix]}", "\"") if params[:site_prefix].present?
       else
         value = value.to_s
       end      

@@ -116,6 +116,7 @@ module Sinicum
       end
       result << meta_simple_meta_tag(:language, I18n.locale.to_s)
       result << meta_simple_meta_tag(:'DC.language', I18n.locale.to_s)
+      result << meta_simple_meta_tag(:'X-Template', mgnl_content_data.mgnl_template)
       result.html_safe
     end
 

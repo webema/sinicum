@@ -114,8 +114,7 @@ module Sinicum
       if meta_tag_value(:meta_noindex) || meta_tag_value(:robots) == 'false'
         result << meta_simple_meta_tag(:robots, 'noindex, nofollow')
       end
-      result << meta_simple_meta_tag(:language, I18n.locale.to_s)
-      result << meta_simple_meta_tag(:'DC.language', I18n.locale.to_s)
+      result << meta_simple_meta_tag(:lang, I18n.locale.to_s)
       result << meta_simple_meta_tag(:'x-template', mgnl_content_data.mgnl_template)
       result.html_safe
     end

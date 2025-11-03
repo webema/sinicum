@@ -132,9 +132,9 @@ module Sinicum
       tag_params
     end
 
-    def adjust_to_asset_host(path)
+    def adjust_to_asset_host(path, options = {})
       asset_host = defined?(compute_asset_host) ? compute_asset_host(path) : nil
-      if asset_host.nil? || !fingerprint_in_asset_path(path)
+      if !!options[:skip_asset_host] || asset_host.nil? || !fingerprint_in_asset_path(path)
         path
       else
         "#{asset_host}#{path}"

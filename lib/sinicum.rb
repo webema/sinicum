@@ -28,6 +28,7 @@ module Sinicum
   require 'sinicum/jcr/api_queries'
   require 'sinicum/jcr/api_client'
   require 'sinicum/jcr/query_sanitizer'
+  require 'sinicum/jcr/errors/content_fetch_error'
   require 'sinicum/jcr/node_queries'
   require 'sinicum/jcr/mgnl4_compatibility'
   require 'sinicum/jcr/node'

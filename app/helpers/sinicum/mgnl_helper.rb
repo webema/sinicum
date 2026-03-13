@@ -74,10 +74,9 @@ module Sinicum
     def mgnl_out(key, options = {})
       value = mgnl_value(key)
       value = "" if value.nil?
+      value = value.to_s
       if Rails.application.config.x.multisite_production
-        value = value.to_s.gsub("\"/#{params[:site_prefix]}", "\"") if params[:site_prefix].present?
-      else
-        value = value.to_s
+        value = value.gsub("\"/#{params[:site_prefix]}", "\"") if params[:site_prefix].present?
       end      
       if options[:format] == :sanitize
         value = sanitize(value)
@@ -114,8 +113,8 @@ module Sinicum
       if meta_tag_value(:meta_noindex) || meta_tag_value(:robots) == 'false'
         result << meta_simple_meta_tag(:robots, 'noindex, nofollow')
       end
-      result << meta_simple_meta_tag(:lang, I18n.locale.to_s)
-      result << meta_simple_meta_tag(:'x-template', mgnl_content_data.mgnl_template)
+      result << meta_simple_meta_tag(:language, I18n.locale.to_s)
+      result << meta_simple_meta_tag(:'x-template', value_from_content(mgnl_content_data, :mgnl_template))
       result.html_safe
     end
 

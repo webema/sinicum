@@ -115,6 +115,23 @@ module Sinicum
           expect(result.second.uuid).to eq("bba4bfcd-8347-40d0-9bb6-504ddde1c5a1")
         end
       end
+
+      describe "error handling" do
+        it "raises a specific content fetch error for 500 responses with json body" do
+          stub_request(:get, "#{prefix}/website/error-page").to_return(
+            status: 500,
+            body: MultiJson.dump("message" => "Backend exploded"),
+            headers: { "Content-Type" => "application/json" }
+          )
+
+          expect do
+            Node.find_by_path("website", "error-page")
+          end.to raise_error(
+            Sinicum::Jcr::Errors::ContentFetchError,
+            "Error fetching content: Backend exploded"
+          )
+        end
+      end
     end
   end
 end

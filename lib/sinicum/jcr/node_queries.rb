@@ -76,10 +76,16 @@ module Sinicum
             rescue
               # nothing
             end
-            fail message
+            raise Sinicum::Jcr::Errors::ContentFetchError.new(
+              message,
+              status: result.status
+            )
           end
           the_status = result ? result.status : "undefined"
-          fail "Error fetching JCR content object. Server status: #{the_status}"
+          raise Sinicum::Jcr::Errors::ContentFetchError.new(
+            "Error fetching JCR content object. Server status: #{the_status}",
+            status: the_status
+          )
         end
 
         def create_instances(body)

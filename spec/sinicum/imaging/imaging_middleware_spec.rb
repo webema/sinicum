@@ -23,6 +23,21 @@ module Sinicum
         expect(last_response.status).to eq(404)
       end
 
+      describe "rack compatibility" do
+        it "uses the available rack file server class as superclass" do
+          expected = defined?(Rack::Files) ? Rack::Files : Rack::File
+          expect(::Sinicum::Imaging::RackFileServer).to eq(expected)
+          expect(described_class.superclass).to eq(expected)
+        end
+
+        it "returns 405 for disallowed verbs on imaging paths" do
+          post "/damfiles/default/path/to/file"
+          expect(last_response.status).to eq(405)
+          expect(last_response.headers["Content-Type"]).to eq("text/plain")
+          expect(last_response.body).to eq("Method Not Allowed")
+        end
+      end
+
       describe "request to an existing file" do
         before(:each) do
           mock_resource = double("resource")

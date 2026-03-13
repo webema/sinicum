@@ -1,7 +1,9 @@
 module Sinicum
   module Imaging
+    RackFileServer = defined?(Rack::Files) ? Rack::Files : Rack::File
+
     # Public: Rack middleware to handle a request to the imaging fuctionality.
-    class ImagingMiddleware < Rack::File
+    class ImagingMiddleware < RackFileServer
       SUFFIX_REGEX = /\.\w+$/
       DEFAULT_CACHE_TIME = 24 * 60 * 60
 
@@ -54,6 +56,14 @@ module Sinicum
 
       def redirect(location)
         [302, { 'Location' => location, 'Content-Type' => 'text/html' }, ['Found (Moved Temporarily)']]
+      end
+
+      private
+
+      # Rack::File exposed this helper in older versions. Rack::Files does not,
+      # so we provide a local fallback response helper.
+      def fail(status, body)
+        [status, { 'Content-Type' => 'text/plain', 'Content-Length' => body.bytesize.to_s }, [body]]
       end
     end
   end

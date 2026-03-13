@@ -10,7 +10,7 @@ module Sinicum
         end
 
         jcr_config_file = ERB.new(File.read(filename)).result
-        config = YAML.load(jcr_config_file)[Rails.env]
+        config = YAML.safe_load(jcr_config_file, aliases: true)[Rails.env]
         config
       end
     end

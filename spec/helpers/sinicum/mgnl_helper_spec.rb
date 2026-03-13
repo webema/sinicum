@@ -236,10 +236,16 @@ module Sinicum
         expect(result.root.elements["meta[@name = 'robots']"]).to be nil
       end
 
-      it "should display a language tag" do
+      it "should display a lang tag" do
         result = REXML::Document.new("<div>" + helper.mgnl_meta + "</div>")
-        expect(result.root.elements["meta[@name = 'language']"].attributes["content"])
+        expect(result.root.elements["meta[@name = 'lang']"].attributes["content"])
           .to eq(I18n.locale.to_s)
+      end
+
+      it "should set the language on the html tag in the layout" do
+        layout_file = File.expand_path("../../../dummy/app/views/layouts/application.html.erb", __FILE__)
+        layout = File.read(layout_file)
+        expect(layout).to include('<html lang="<%= I18n.locale %>">')
       end
 
       it "should display the content type tag" do

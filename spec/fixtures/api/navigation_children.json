@@ -213,6 +213,7 @@
     "title" : "Products Overview",
     "nav_title" : "products"
   },
+  "hasChildren" : true,
   "children" : [ {
     "properties" : {
       "title" : "Microphones for almost every application",

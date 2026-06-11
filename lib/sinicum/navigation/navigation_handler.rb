@@ -73,7 +73,7 @@ module Sinicum
         unless @navigation_element_class.filter_node(el)
           children = resolve_children(el)
           element = @navigation_element_class.new(
-            el["uuid"], el["path"], el["depth"], el["properties"], children)
+            el["uuid"], el["path"], el["depth"], el["properties"], children, el["hasChildren"])
           result = element
         end
         result

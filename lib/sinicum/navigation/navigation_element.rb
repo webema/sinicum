@@ -3,14 +3,15 @@ module Sinicum
     module NavigationElement
       extend ActiveSupport::Concern
 
-      attr_reader :uuid, :path, :depth, :properties, :children
+      attr_reader :uuid, :path, :depth, :properties, :children, :has_children
 
-      def initialize(uuid, path, depth, properties, children)
+      def initialize(uuid, path, depth, properties, children, has_children = nil)
         @uuid = uuid
         @path = path
         @depth = depth
         @properties = properties
         @children = children
+        @has_children = has_children
       end
 
       def title
@@ -18,10 +19,12 @@ module Sinicum
 
       def has_children?
         warn "[DEPRECATION] `has_children?` is deprecated.  Please use `children?` instead."
-        @children && @children.size > 0
+        children?
       end
 
       def children?
+        return @has_children unless @has_children.nil?
+
         @children && @children.size > 0
       end
 

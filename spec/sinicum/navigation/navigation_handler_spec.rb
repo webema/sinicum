@@ -38,6 +38,42 @@ module Sinicum
           handler = NavigationHandler.children(base_node, 3)
           expect(handler.elements.first.children.size).to eq(10)
         end
+
+        it "should initialize the has children metadata" do
+          handler = NavigationHandler.children(base_node, 3)
+          expect(handler.elements.first.has_children).to be true
+        end
+
+        it "should know about unloaded children on level 2" do
+          api_response = MultiJson.dump(
+            [
+              {
+                "uuid" => "level-1",
+                "path" => "/level-1",
+                "depth" => 1,
+                "properties" => { "title" => "Level 1" },
+                "children" => [
+                  {
+                    "uuid" => "level-2",
+                    "path" => "/level-1/level-2",
+                    "depth" => 2,
+                    "properties" => { "title" => "Level 2" },
+                    "hasChildren" => true
+                  }
+                ]
+              }
+            ])
+
+          stub_request(:get, "#{prefix}/_navigation/children/#{base_node.uuid}?depth=2&" \
+            "properties=title;nav_title;nav_hidden")
+            .to_return(body: api_response, headers: { "Content-Type" => "application/json" })
+
+          handler = NavigationHandler.children(base_node, 2)
+          level_two = handler.elements.first.children.first
+
+          expect(level_two.children).to be_empty
+          expect(level_two.children?).to be true
+        end
       end
 
       describe "parents" do

@@ -6,7 +6,7 @@ module Sinicum
       include Enumerable
 
       def initialize(navigation_elements = [])
-        @navigation_elements = navigation_elements
+        @navigation_elements = navigation_elements || []
       end
 
       def each(&block)

@@ -40,6 +40,17 @@ module Sinicum
         )
         expect(el.title).to eq("Navigation Title")
       end
+
+      it "should use the has_children metadata when it is present" do
+        el = DefaultNavigationElement.new(nil, nil, nil, {}, nil, true)
+        expect(el.children?).to be true
+      end
+
+      it "should fall back to the children list when metadata is missing" do
+        child = DefaultNavigationElement.new(nil, nil, nil, {}, nil)
+        el = DefaultNavigationElement.new(nil, nil, nil, {}, [child])
+        expect(el.children?).to be true
+      end
     end
   end
 end

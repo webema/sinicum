@@ -31,17 +31,7 @@ module Sinicum
         if available_components
           result = mgnl_comment_tag(
             :'cms:area',
-            content: "#{mgnl_content_data.jcr_workspace}:#{mgnl_content_data.jcr_path}/" \
-            "#{area_name}",
-            name: area_name,
-            availableComponents: available_components.join(","),
-            type: "list",
-            label: area_name,
-            inherit: "false",
-            optional: "false",
-            showAddButton: "true",
-            showNewComponentArea: "true",
-            description: area_name) do
+            area_tag_params(area_name, available_components, options)) do
             mgnl_render_component(area_name.to_sym, options)
           end
           result = result.html_safe if result
@@ -95,6 +85,39 @@ module Sinicum
     end
 
     private
+
+    def area_tag_params(area_name, available_components, options)
+      result = {
+        content: "#{mgnl_content_data.jcr_workspace}:#{mgnl_content_data.jcr_path}/" \
+        "#{area_name}",
+        name: area_name,
+        availableComponents: available_components.join(","),
+        type: "list",
+        label: area_name,
+        inherit: "false",
+        optional: "false",
+        showAddButton: "true",
+        showNewComponentArea: "true",
+        description: area_name
+      }
+      result.merge!(max_components_tag_params(area_name, options))
+      result
+    end
+
+    def max_components_tag_params(area_name, options)
+      result = {}
+      if options[:max_components]
+        max_components = options[:max_components].to_i
+        area = object_from_key_or_object(area_name.to_sym)
+        component_count = area ? area.children.size : 0
+        show_add_button = component_count < max_components
+
+        result[:maxComponents] = max_components
+        result[:showAddButton] = show_add_button.to_s
+        result[:showNewComponentArea] = show_add_button.to_s
+      end
+      result
+    end
 
     def render_missing_template(node, error)
       type = node.jcr_primary_type == "mgnl:area" ? "area" : "component"
